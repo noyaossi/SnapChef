@@ -1,0 +1,170 @@
+[
+  {
+    "id": 1,
+    "name": "Classic Tomato Pasta",
+    "ingredients": ["tomato", "pasta", "garlic", "olive oil", "basil"],
+    "allergens": ["wheat", "gluten"],
+    "instructions": [
+      "Boil pasta according to package instructions.",
+      "In a separate pan, sauté garlic in olive oil.",
+      "Add diced tomatoes and cook until soft.",
+      "Mix with cooked pasta and garnish with fresh basil."
+    ],
+    "prepTime": "15 minutes",
+    "cookTime": "20 minutes",
+    "servings": 4,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 2,
+    "name": "Chicken Stir Fry",
+    "ingredients": ["chicken", "bell pepper", "broccoli", "soy sauce", "rice"],
+    "allergens": ["soy"],
+    "instructions": [
+      "Cook rice according to package instructions.",
+      "Cut chicken into small pieces and cook in a wok until no longer pink.",
+      "Add chopped vegetables and stir fry until tender-crisp.",
+      "Add soy sauce and stir to combine.",
+      "Serve over rice."
+    ],
+    "prepTime": "20 minutes",
+    "cookTime": "15 minutes",
+    "servings": 4,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3,
+    "name": "Vegetable Omelette",
+    "ingredients": ["eggs", "bell pepper", "onion", "cheese", "spinach"],
+    "allergens": ["eggs", "dairy"],
+    "instructions": [
+      "Beat eggs in a bowl.",
+      "Chop vegetables into small pieces.",
+      "Heat a non-stick pan and pour in the eggs.",
+      "Add vegetables and cheese on one half of the omelette.",
+      "Fold the other half over and cook until eggs are set."
+    ],
+    "prepTime": "10 minutes",
+    "cookTime": "5 minutes",
+    "servings": 1,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 4,
+    "name": "Beef Tacos",
+    "ingredients": ["ground beef", "taco shells", "lettuce", "tomato", "cheese", "sour cream"],
+    "allergens": ["dairy", "wheat", "gluten"],
+    "instructions": [
+      "Brown ground beef in a pan, adding taco seasoning.",
+      "Warm taco shells according to package instructions.",
+      "Chop lettuce and tomato.",
+      "Assemble tacos with beef, vegetables, cheese, and sour cream."
+    ],
+    "prepTime": "15 minutes",
+    "cookTime": "15 minutes",
+    "servings": 4,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 5,
+    "name": "Salmon with Roasted Vegetables",
+    "ingredients": ["salmon", "broccoli", "carrot", "potato", "olive oil", "lemon"],
+    "allergens": ["fish"],
+    "instructions": [
+      "Preheat oven to 400°F (200°C).",
+      "Cut vegetables into bite-sized pieces and toss with olive oil.",
+      "Place salmon and vegetables on a baking sheet.",
+      "Squeeze lemon over salmon.",
+      "Roast for 20-25 minutes until salmon is cooked through and vegetables are tender."
+    ],
+    "prepTime": "15 minutes",
+    "cookTime": "25 minutes",
+    "servings": 2,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 6,
+    "name": "Vegan Chickpea Curry",
+    "ingredients": ["chickpeas", "coconut milk", "curry powder", "onion", "garlic", "rice"],
+    "allergens": [],
+    "instructions": [
+      "Sauté onion and garlic in a pot.",
+      "Add curry powder and stir for 1 minute.",
+      "Add chickpeas and coconut milk.",
+      "Simmer for 15 minutes.",
+      "Serve over rice."
+    ],
+    "prepTime": "10 minutes",
+    "cookTime": "20 minutes",
+    "servings": 4,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 7,
+    "name": "Gluten-Free Pancakes",
+    "ingredients": ["gluten-free flour", "eggs", "milk", "baking powder", "sugar", "butter"],
+    "allergens": ["eggs", "dairy"],
+    "instructions": [
+      "Mix dry ingredients in a bowl.",
+      "In a separate bowl, whisk together eggs, milk, and melted butter.",
+      "Combine wet and dry ingredients.",
+      "Heat a non-stick pan and pour batter to form pancakes.",
+      "Cook until bubbles form, then flip and cook the other side."
+    ],
+    "prepTime": "10 minutes",
+    "cookTime": "15 minutes",
+    "servings": 4,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 8,
+    "name": "Dairy-Free Chocolate Cake",
+    "ingredients": ["flour", "sugar", "cocoa powder", "baking soda", "vegetable oil", "water", "vanilla extract"],
+    "allergens": ["wheat", "gluten"],
+    "instructions": [
+      "Preheat oven to 350°F (175°C).",
+      "Mix dry ingredients in a bowl.",
+      "Add wet ingredients and stir until combined.",
+      "Pour into a greased cake pan.",
+      "Bake for 30-35 minutes until a toothpick inserted comes out clean."
+    ],
+    "prepTime": "15 minutes",
+    "cookTime": "35 minutes",
+    "servings": 8,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 9,
+    "name": "Nut-Free Granola Bars",
+    "ingredients": ["oats", "honey", "dried fruit", "seeds", "coconut oil"],
+    "allergens": ["gluten"],
+    "instructions": [
+      "Preheat oven to 325°F (165°C).",
+      "Mix oats, dried fruit, and seeds in a bowl.",
+      "Heat honey and coconut oil until combined.",
+      "Pour over dry ingredients and mix well.",
+      "Press into a lined baking pan.",
+      "Bake for 20-25 minutes, then cool before cutting into bars."
+    ],
+    "prepTime": "10 minutes",
+    "cookTime": "25 minutes",
+    "servings": 12,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 10,
+    "name": "Shellfish-Free Seafood Pasta",
+    "ingredients": ["pasta", "white fish", "tomato sauce", "garlic", "parsley"],
+    "allergens": ["fish", "wheat", "gluten"],
+    "instructions": [
+      "Cook pasta according to package instructions.",
+      "In a separate pan, cook fish until flaky.",
+      "Add tomato sauce and garlic, simmer for 5 minutes.",
+      "Combine with pasta and garnish with parsley."
+    ],
+    "prepTime": "15 minutes",
+    "cookTime": "20 minutes",
+    "servings": 4,
+    "difficulty": "Medium"
+  }
+]

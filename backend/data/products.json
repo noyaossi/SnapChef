@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "name": "Tomato",
+    "category": "Vegetable",
+    "possibleIngredients": ["tomato"],
+    "commonAllergens": []
+  },
+  {
+    "id": 2,
+    "name": "Pasta",
+    "category": "Grain",
+    "possibleIngredients": ["pasta"],
+    "commonAllergens": ["wheat", "gluten"]
+  },
+  {
+    "id": 3,
+    "name": "Chicken",
+    "category": "Meat",
+    "possibleIngredients": ["chicken"],
+    "commonAllergens": []
+  },
+  {
+    "id": 4,
+    "name": "Bell Pepper",
+    "category": "Vegetable",
+    "possibleIngredients": ["bell pepper"],
+    "commonAllergens": []
+  },
+  {
+    "id": 5,
+    "name": "Eggs",
+    "category": "Dairy",
+    "possibleIngredients": ["eggs"],
+    "commonAllergens": ["eggs"]
+  },
+  {
+    "id": 6,
+    "name": "Cheese",
+    "category": "Dairy",
+    "possibleIngredients": ["cheese"],
+    "commonAllergens": ["dairy"]
+  },
+  {
+    "id": 7,
+    "name": "Ground Beef",
+    "category": "Meat",
+    "possibleIngredients": ["ground beef"],
+    "commonAllergens": []
+  },
+  {
+    "id": 8,
+    "name": "Salmon",
+    "category": "Fish",
+    "possibleIngredients": ["salmon"],
+    "commonAllergens": ["fish"]
+  },
+  {
+    "id": 9,
+    "name": "Chickpeas",
+    "category": "Legume",
+    "possibleIngredients": ["chickpeas"],
+    "commonAllergens": []
+  },
+  {
+    "id": 10,
+    "name": "Flour",
+    "category": "Baking",
+    "possibleIngredients": ["flour"],
+    "commonAllergens": ["wheat", "gluten"]
+  },
+  {
+    "id": 11,
+    "name": "Milk",
+    "category": "Dairy",
+    "possibleIngredients": ["milk"],
+    "commonAllergens": ["dairy"]
+  },
+  {
+    "id": 12,
+    "name": "Oats",
+    "category": "Grain",
+    "possibleIngredients": ["oats"],
+    "commonAllergens": ["gluten"]
+  },
+  {
+    "id": 13,
+    "name": "Rice",
+    "category": "Grain",
+    "possibleIngredients": ["rice"],
+    "commonAllergens": []
+  },
+  {
+    "id": 14,
+    "name": "Broccoli",
+    "category": "Vegetable",
+    "possibleIngredients": ["broccoli"],
+    "commonAllergens": []
+  },
+  {
+    "id": 15,
+    "name": "Soy Sauce",
+    "category": "Condiment",
+    "possibleIngredients": ["soy sauce"],
+    "commonAllergens": ["soy", "wheat", "gluten"]
+  },
+  {
+    "id": 16,
+    "name": "Peanuts",
+    "category": "Nuts",
+    "possibleIngredients": ["peanuts"],
+    "commonAllergens": ["peanuts"]
+  },
+  {
+    "id": 17,
+    "name": "Almonds",
+    "category": "Nuts",
+    "possibleIngredients": ["almonds"],
+    "commonAllergens": ["treeNuts"]
+  },
+  {
+    "id": 18,
+    "name": "Shrimp",
+    "category": "Seafood",
+    "possibleIngredients": ["shrimp"],
+    "commonAllergens": ["shellfish"]
+  },
+  {
+    "id": 19,
+    "name": "Coconut Milk",
+    "category": "Dairy Alternative",
+    "possibleIngredients": ["coconut milk"],
+    "commonAllergens": []
+  },
+  {
+    "id": 20,
+    "name": "Potatoes",
+    "category": "Vegetable",
+    "possibleIngredients": ["potato"],
+    "commonAllergens": []
+  }
+]
