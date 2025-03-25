@@ -1,5 +1,4 @@
-import fs from 'fs';
-import { config } from '../config.js';
+import { claudeService } from './claudeService.js';
 
 /**
  * Service for handling product-related operations
@@ -7,29 +6,15 @@ import { config } from '../config.js';
 class ProductService {
   constructor() {
     this.products = [];
-    this.loadProducts();
+    this.productCache = new Map();
   }
 
   /**
-   * Load products from the JSON file
-   */
-  loadProducts() {
-    try {
-      const productsData = fs.readFileSync(config.productsPath, 'utf8');
-      this.products = JSON.parse(productsData);
-      console.log(`Loaded ${this.products.length} products`);
-    } catch (error) {
-      console.error('Error loading products:', error);
-      this.products = [];
-    }
-  }
-
-  /**
-   * Get all products
+   * Get all products from cache
    * @returns {Array} Array of products
    */
   getAllProducts() {
-    return this.products;
+    return Array.from(this.productCache.values());
   }
 
   /**
@@ -38,36 +23,41 @@ class ProductService {
    * @returns {Object|null} Product object or null if not found
    */
   getProductById(id) {
-    return this.products.find(product => product.id === id) || null;
+    return this.productCache.get(id) || null;
   }
 
   /**
-   * Get random products for mock image analysis
-   * @param {number} count - Number of products to return
-   * @returns {Array} Array of random products
+   * Add a product to the cache
+   * @param {Object} product - Product to add
    */
-  getRandomProducts(count = 1) {
-    if (this.products.length === 0) {
-      return [];
-    }
+  addToCache(product) {
+    this.productCache.set(product.id, product);
+  }
 
-    const randomProducts = [];
-    const maxCount = Math.min(count, this.products.length);
+  /**
+   * Create products from detected items
+   * @param {Array} detectedItems - Items detected by Claude
+   * @returns {Array} Created products
+   */
+  createProductsFromDetectedItems(detectedItems) {
+    const products = [];
     
-    for (let i = 0; i < maxCount; i++) {
-      const randomIndex = Math.floor(Math.random() * this.products.length);
-      const product = this.products[randomIndex];
+    for (const item of detectedItems) {
+      // Create a product from the detected item
+      const product = {
+        id: Date.now() + products.length,
+        name: item.name,
+        category: item.category || 'Other',
+        possibleIngredients: [item.name.toLowerCase()],
+        commonAllergens: []
+      };
       
-      // Avoid duplicates
-      if (!randomProducts.some(p => p.id === product.id)) {
-        randomProducts.push(product);
-      } else {
-        // Try again if we got a duplicate
-        i--;
-      }
+      // Add to cache and return array
+      this.addToCache(product);
+      products.push(product);
     }
     
-    return randomProducts;
+    return products;
   }
 }
 

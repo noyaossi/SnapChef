@@ -1,5 +1,3 @@
-import fs from 'fs';
-import { config } from '../config.js';
 import { claudeService } from './claudeService.js';
 
 /**
@@ -7,30 +5,15 @@ import { claudeService } from './claudeService.js';
  */
 class RecipeService {
   constructor() {
-    this.recipes = [];
-    this.loadRecipes();
+    this.recipeCache = new Map();
   }
 
   /**
-   * Load recipes from the JSON file
-   */
-  loadRecipes() {
-    try {
-      const recipesData = fs.readFileSync(config.recipesPath, 'utf8');
-      this.recipes = JSON.parse(recipesData);
-      console.log(`Loaded ${this.recipes.length} recipes`);
-    } catch (error) {
-      console.error('Error loading recipes:', error);
-      this.recipes = [];
-    }
-  }
-
-  /**
-   * Get all recipes
+   * Get all recipes from cache
    * @returns {Array} Array of recipes
    */
   getAllRecipes() {
-    return this.recipes;
+    return Array.from(this.recipeCache.values());
   }
 
   /**
@@ -39,7 +22,15 @@ class RecipeService {
    * @returns {Object|null} Recipe object or null if not found
    */
   getRecipeById(id) {
-    return this.recipes.find(recipe => recipe.id === id) || null;
+    return this.recipeCache.get(id) || null;
+  }
+
+  /**
+   * Add a recipe to the cache
+   * @param {Object} recipe - Recipe to add
+   */
+  addToCache(recipe) {
+    this.recipeCache.set(recipe.id, recipe);
   }
 
   /**
@@ -50,65 +41,23 @@ class RecipeService {
    */
   async findRecipesByProducts(products, userAllergies = []) {
     try {
-      // Try to get recipe suggestions from Claude
+      // Get recipe suggestions from Claude
       const claudeRecipes = await claudeService.getRecipeSuggestions(products, userAllergies);
       
-      // If Claude returned recipes, use those
+      // Add recipes to cache
       if (claudeRecipes && claudeRecipes.length > 0) {
+        for (const recipe of claudeRecipes) {
+          this.addToCache(recipe);
+        }
         return claudeRecipes;
       }
+      
+      // If Claude didn't return any recipes, return empty array
+      return [];
     } catch (error) {
       console.error('Error getting recipes from Claude:', error);
-      // Fall back to local recipe database if Claude API fails
+      throw new Error(`Failed to get recipe suggestions: ${error.message}`);
     }
-    
-    // Fallback to local recipe database
-    // Extract possible ingredients from products
-    const availableIngredients = products.flatMap(product => 
-      product.possibleIngredients || []
-    );
-    
-    if (availableIngredients.length === 0) {
-      return [];
-    }
-    
-    // Find recipes that use at least one of the available ingredients
-    let matchingRecipes = this.recipes.filter(recipe => 
-      recipe.ingredients.some(ingredient => 
-        availableIngredients.some(available => 
-          ingredient.includes(available) || available.includes(ingredient)
-        )
-      )
-    );
-    
-    // Filter out recipes that contain user allergies
-    if (userAllergies && userAllergies.length > 0) {
-      matchingRecipes = matchingRecipes.filter(recipe => 
-        !recipe.allergens.some(allergen => 
-          userAllergies.includes(allergen)
-        )
-      );
-    }
-    
-    // Sort recipes by relevance (number of matching ingredients)
-    matchingRecipes.sort((a, b) => {
-      const aMatches = a.ingredients.filter(ingredient => 
-        availableIngredients.some(available => 
-          ingredient.includes(available) || available.includes(ingredient)
-        )
-      ).length;
-      
-      const bMatches = b.ingredients.filter(ingredient => 
-        availableIngredients.some(available => 
-          ingredient.includes(available) || available.includes(ingredient)
-        )
-      ).length;
-      
-      return bMatches - aMatches;
-    });
-    
-    // Return top 5 recipes
-    return matchingRecipes.slice(0, 5);
   }
 }
 

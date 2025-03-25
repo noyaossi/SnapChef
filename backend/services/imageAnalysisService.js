@@ -17,8 +17,8 @@ class ImageAnalysisService {
       // Use Claude to analyze the image
       const detectedItems = await claudeService.analyzeImage(imageData);
       
-      // Map detected items to our product database
-      const detectedProducts = this.mapDetectedItemsToProducts(detectedItems);
+      // Create products from detected items
+      const detectedProducts = productService.createProductsFromDetectedItems(detectedItems);
       
       return {
         detectedProducts,
@@ -26,53 +26,8 @@ class ImageAnalysisService {
       };
     } catch (error) {
       console.error('Error analyzing image:', error);
-      
-      // Fallback to random products if Claude API fails
-      const numProducts = Math.floor(Math.random() * 3) + 1;
-      const detectedProducts = productService.getRandomProducts(numProducts);
-      
-      return {
-        detectedProducts,
-        timestamp: new Date().toISOString()
-      };
+      throw new Error(`Failed to analyze image: ${error.message}`);
     }
-  }
-
-  /**
-   * Map detected items from Claude to our product database
-   * @param {Array} detectedItems - Items detected by Claude
-   * @returns {Array} Mapped products from our database
-   */
-  mapDetectedItemsToProducts(detectedItems) {
-    const allProducts = productService.getAllProducts();
-    const mappedProducts = [];
-    
-    for (const item of detectedItems) {
-      // Try to find a matching product in our database
-      const matchingProduct = allProducts.find(product => 
-        product.name.toLowerCase() === item.name.toLowerCase() ||
-        product.possibleIngredients.some(ing => 
-          ing.toLowerCase().includes(item.name.toLowerCase()) ||
-          item.name.toLowerCase().includes(ing)
-        )
-      );
-      
-      if (matchingProduct) {
-        mappedProducts.push(matchingProduct);
-      } else {
-        // If no match found, create a new product entry
-        const newProduct = {
-          id: Date.now() + mappedProducts.length,
-          name: item.name,
-          category: item.category || 'Other',
-          possibleIngredients: [item.name.toLowerCase()],
-          commonAllergens: []
-        };
-        mappedProducts.push(newProduct);
-      }
-    }
-    
-    return mappedProducts;
   }
 
   /**
