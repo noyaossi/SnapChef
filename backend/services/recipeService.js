@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { config } from '../config.js';
+import { claudeService } from './claudeService.js';
 
 /**
  * Service for handling recipe-related operations
@@ -45,9 +46,23 @@ class RecipeService {
    * Find recipes based on available ingredients and filter by allergies
    * @param {Array} products - Array of product objects
    * @param {Array} userAllergies - Array of allergy strings
-   * @returns {Array} Array of matching recipes
+   * @returns {Promise<Array>} Array of matching recipes
    */
-  findRecipesByProducts(products, userAllergies = []) {
+  async findRecipesByProducts(products, userAllergies = []) {
+    try {
+      // Try to get recipe suggestions from Claude
+      const claudeRecipes = await claudeService.getRecipeSuggestions(products, userAllergies);
+      
+      // If Claude returned recipes, use those
+      if (claudeRecipes && claudeRecipes.length > 0) {
+        return claudeRecipes;
+      }
+    } catch (error) {
+      console.error('Error getting recipes from Claude:', error);
+      // Fall back to local recipe database if Claude API fails
+    }
+    
+    // Fallback to local recipe database
     // Extract possible ingredients from products
     const availableIngredients = products.flatMap(product => 
       product.possibleIngredients || []

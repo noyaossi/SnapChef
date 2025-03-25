@@ -29,7 +29,7 @@ const router = express.Router();
  * POST /api/analyze
  * Analyze an image and suggest recipes
  */
-router.post('/analyze', (req, res) => {
+router.post('/analyze', async (req, res) => {
   try {
     // Get the image data and allergies from the request body
     const { imageData, allergies } = req.body;
@@ -39,7 +39,7 @@ router.post('/analyze', (req, res) => {
     }
     
     // Process the image
-    const results = imageAnalysisService.processImage(imageData, allergies);
+    const results = await imageAnalysisService.processImage(imageData, allergies);
     
     // Return the analysis and recipe results
     res.json({
@@ -61,14 +61,14 @@ router.post('/analyze', (req, res) => {
  * POST /api/analyze/upload
  * Upload and analyze an image file
  */
-router.post('/analyze/upload', upload.single('image'), (req, res) => {
+router.post('/analyze/upload', upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No image file provided' });
     }
     
     // Process the image
-    const results = imageAnalysisService.processImage(req.file.path);
+    const results = await imageAnalysisService.processImage(req.file.path);
     
     // Return the analysis results
     res.json({

@@ -1,26 +1,78 @@
 import { productService } from './productService.js';
 import { recipeService } from './recipeService.js';
+import { claudeService } from './claudeService.js';
 
 /**
  * Service for handling image analysis operations
  */
 class ImageAnalysisService {
   /**
-   * Analyze an image to detect products
-   * In a real application, this would use computer vision
-   * For this example, we return mock results
+   * Analyze an image to detect products using Claude API
    * 
-   * @returns {Object} Analysis results
+   * @param {string} imageData - Base64 encoded image data
+   * @returns {Promise<Object>} Analysis results
    */
-  analyzeImage() {
-    // Randomly select 1-3 products
-    const numProducts = Math.floor(Math.random() * 3) + 1;
-    const detectedProducts = productService.getRandomProducts(numProducts);
+  async analyzeImage(imageData) {
+    try {
+      // Use Claude to analyze the image
+      const detectedItems = await claudeService.analyzeImage(imageData);
+      
+      // Map detected items to our product database
+      const detectedProducts = this.mapDetectedItemsToProducts(detectedItems);
+      
+      return {
+        detectedProducts,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      console.error('Error analyzing image:', error);
+      
+      // Fallback to random products if Claude API fails
+      const numProducts = Math.floor(Math.random() * 3) + 1;
+      const detectedProducts = productService.getRandomProducts(numProducts);
+      
+      return {
+        detectedProducts,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
+  /**
+   * Map detected items from Claude to our product database
+   * @param {Array} detectedItems - Items detected by Claude
+   * @returns {Array} Mapped products from our database
+   */
+  mapDetectedItemsToProducts(detectedItems) {
+    const allProducts = productService.getAllProducts();
+    const mappedProducts = [];
     
-    return {
-      detectedProducts,
-      timestamp: new Date().toISOString()
-    };
+    for (const item of detectedItems) {
+      // Try to find a matching product in our database
+      const matchingProduct = allProducts.find(product => 
+        product.name.toLowerCase() === item.name.toLowerCase() ||
+        product.possibleIngredients.some(ing => 
+          ing.toLowerCase().includes(item.name.toLowerCase()) ||
+          item.name.toLowerCase().includes(ing)
+        )
+      );
+      
+      if (matchingProduct) {
+        mappedProducts.push(matchingProduct);
+      } else {
+        // If no match found, create a new product entry
+        const newProduct = {
+          id: Date.now() + mappedProducts.length,
+          name: item.name,
+          category: item.category || 'Other',
+          possibleIngredients: [item.name.toLowerCase()],
+          commonAllergens: []
+        };
+        mappedProducts.push(newProduct);
+      }
+    }
+    
+    return mappedProducts;
   }
 
   /**
@@ -28,14 +80,14 @@ class ImageAnalysisService {
    * 
    * @param {string} imageData - Base64 encoded image data
    * @param {Array} allergies - User allergies
-   * @returns {Object} Analysis and recipe results
+   * @returns {Promise<Object>} Analysis and recipe results
    */
-  processImage(imageData, allergies = []) {
+  async processImage(imageData, allergies = []) {
     // Analyze the image to detect products
-    const analysisResults = this.analyzeImage();
+    const analysisResults = await this.analyzeImage(imageData);
     
     // Find recipes based on detected products and user allergies
-    const recipes = recipeService.findRecipesByProducts(
+    const recipes = await recipeService.findRecipesByProducts(
       analysisResults.detectedProducts, 
       allergies
     );
