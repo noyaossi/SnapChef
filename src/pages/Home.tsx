@@ -7,13 +7,13 @@ const Home = () => {
     <ContentContainer>
       <div className="flex flex-col items-center justify-center h-full">
         <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent">
-          Recipe Finder
+          SnapChef - Snap a photo, find a recipe
         </h1>
 
         <div className="mb-12 text-center">
           <p className="text-lg text-gray-700 mb-4">
-            Take a picture of your food products and get personalized recipe
-            suggestions
+            Take/upload a picture of your food products and get personalized
+            recipe suggestions
           </p>
           <p className="text-gray-500">
             Our AI will analyze your products, consider your allergies, and

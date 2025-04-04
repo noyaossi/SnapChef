@@ -1,5 +1,4 @@
 import { Home } from "./pages/Home";
-import { HomeHe } from "./pages/HomeHe";
 import { NotFound } from "./pages/NotFound";
 import { Picture } from "./pages/Picture";
 import { Camera } from "./components/Camera";
@@ -17,10 +16,6 @@ export const browserRouter = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
-      },
-      {
-        path: "/he",
-        element: <HomeHe />,
       },
       {
         path: "/camera",
