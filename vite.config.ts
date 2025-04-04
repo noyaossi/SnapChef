@@ -21,6 +21,15 @@ export default defineConfig({
     port: 5173,
     open: true,
     cors: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path
+      }
+    },
+    host: true // Allow connections from all network interfaces
   },
   build: {
     outDir: 'dist',

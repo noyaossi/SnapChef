@@ -18,9 +18,22 @@ class Server {
    * Set up middleware
    */
   setupMiddleware() {
-    this.app.use(cors());
+    // Configure CORS to allow requests from any origin (including ngrok)
+    this.app.use(cors({
+      origin: '*',
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization']
+    }));
+    
+    // Increase JSON limit for large image payloads
     this.app.use(express.json({ limit: '50mb' }));
     this.app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+    
+    // Add middleware to log requests
+    this.app.use((req, res, next) => {
+      console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+      next();
+    });
   }
 
   /**

@@ -13,11 +13,41 @@ class ClaudeService {
 
   /**
    * Analyze an image using Claude API
-   * @param {string} imageData - Base64 encoded image data
+   * @param {string} imageData - Base64 encoded image data or file path
    * @returns {Promise<Object>} Analysis results
    */
   async analyzeImage(imageData) {
     try {
+      // Determine if imageData is a file path or base64 data
+      let imageContent;
+      let mediaType = "image/jpeg";
+      
+      if (typeof imageData === 'string' && imageData.startsWith('data:')) {
+        // Extract the media type from the data URL
+        const matches = imageData.match(/^data:([^;]+);base64,/);
+        if (matches && matches.length > 1) {
+          mediaType = matches[1];
+        }
+        // Remove the data URL prefix
+        imageContent = imageData.replace(/^data:[^;]+;base64,/, '');
+      } else if (typeof imageData === 'string' && (imageData.startsWith('/') || imageData.includes('\\'))) {
+        // It's a file path, read the file
+        const fs = await import('fs');
+        const path = await import('path');
+        const fileData = fs.readFileSync(imageData);
+        imageContent = fileData.toString('base64');
+        
+        // Determine media type from file extension
+        const ext = path.extname(imageData).toLowerCase();
+        if (ext === '.png') mediaType = 'image/png';
+        else if (ext === '.gif') mediaType = 'image/gif';
+        else if (ext === '.webp') mediaType = 'image/webp';
+        else mediaType = 'image/jpeg';
+      } else {
+        // Assume it's already base64 encoded
+        imageContent = imageData;
+      }
+      
       const response = await this.client.messages.create({
         model: "claude-3-opus-20240229",
         max_tokens: 1000,
@@ -33,8 +63,8 @@ class ClaudeService {
                 type: "image",
                 source: {
                   type: "base64",
-                  media_type: "image/jpeg",
-                  data: imageData.replace(/^data:image\/\w+;base64,/, '')
+                  media_type: mediaType,
+                  data: imageContent
                 }
               }
             ]

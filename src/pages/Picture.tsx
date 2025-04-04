@@ -34,7 +34,11 @@ export const Picture: React.FC = () => {
       setError(null);
 
       try {
-        const response = await fetch("http://localhost:3000/api/analyze", {
+        // Use relative URL to work with ngrok and localhost
+        const apiUrl = "/api/analyze";
+        console.log("Sending request to:", apiUrl);
+
+        const response = await fetch(apiUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

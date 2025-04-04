@@ -31,17 +31,28 @@ const router = express.Router();
  */
 router.post('/analyze', async (req, res) => {
   try {
+    console.log('Received analyze request');
+    
     // Get the image data and allergies from the request body
     const { imageData, allergies } = req.body;
     
     if (!imageData) {
-      return res.status(400).json({ error: 'No image data provided' });
+      console.log('No image data provided');
+      return res.status(400).json({ 
+        success: false,
+        message: 'No image data provided' 
+      });
     }
+    
+    // Log image data type for debugging
+    console.log('Image data type:', typeof imageData);
+    console.log('Image data starts with:', typeof imageData === 'string' ? imageData.substring(0, 50) + '...' : 'not a string');
     
     // Process the image
     const results = await imageAnalysisService.processImage(imageData, allergies);
     
     // Return the analysis and recipe results
+    console.log('Analysis completed successfully');
     res.json({
       success: true,
       message: 'Image analyzed successfully',
@@ -49,10 +60,13 @@ router.post('/analyze', async (req, res) => {
     });
   } catch (error) {
     console.error('Error analyzing image:', error);
+    
+    // Provide more detailed error response
     res.status(500).json({ 
       success: false, 
       message: 'Error analyzing image', 
-      error: error.message 
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 });
@@ -63,14 +77,23 @@ router.post('/analyze', async (req, res) => {
  */
 router.post('/analyze/upload', upload.single('image'), async (req, res) => {
   try {
+    console.log('Received file upload request');
+    
     if (!req.file) {
-      return res.status(400).json({ error: 'No image file provided' });
+      console.log('No image file provided');
+      return res.status(400).json({ 
+        success: false,
+        message: 'No image file provided' 
+      });
     }
+    
+    console.log('File received:', req.file.filename);
     
     // Process the image
     const results = await imageAnalysisService.processImage(req.file.path);
     
     // Return the analysis results
+    console.log('File analysis completed successfully');
     res.json({
       success: true,
       message: 'Image analyzed successfully',
@@ -81,11 +104,12 @@ router.post('/analyze/upload', upload.single('image'), async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Error analyzing image:', error);
+    console.error('Error analyzing uploaded image:', error);
     res.status(500).json({ 
       success: false, 
       message: 'Error analyzing image', 
-      error: error.message 
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 });
