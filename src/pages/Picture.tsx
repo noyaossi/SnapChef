@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
+import { ContentContainer } from "../components/ContentContainer";
 import { ImagePreview } from "../components/picture/ImagePreview";
 import { AnalysisStatus } from "../components/picture/AnalysisStatus";
 import { ProductList } from "../components/picture/ProductList";
@@ -8,7 +9,6 @@ import { RecipeList } from "../components/picture/RecipeList";
 import { RecipeDetail } from "../components/picture/RecipeDetail";
 import { ErrorView } from "../components/picture/ErrorView";
 import { LocationState, AnalysisResults, Recipe } from "../types/pictureTypes";
-import backgroundImage from "../assets/homepage.jpg";
 
 export const Picture: React.FC = () => {
   const location = useLocation();
@@ -92,123 +92,97 @@ export const Picture: React.FC = () => {
   // If no image data, show error
   if (!imageData) {
     return (
-      <div
-        className="relative min-h-screen w-full bg-fixed bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-          minHeight: "100vh",
-          width: "100vw",
-          position: "absolute",
-          top: 0,
-          left: 0,
-        }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-10"></div>
-        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full py-12 px-4">
-          <div className="p-6 bg-white bg-opacity-90 rounded-xl shadow-md hover:shadow-lg transition-all mb-8 max-w-2xl w-full">
-            <ErrorView onNavigateToCamera={handleTakeAnotherPicture} />
-          </div>
-          <div className="flex flex-col sm:flex-row gap-6 w-full max-w-md mx-auto">
-            <Button
-              variant="primary"
-              onClick={handleTakeAnotherPicture}
-              className="flex-1 text-lg py-4 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all bg-green-600 hover:bg-green-700 flex items-center justify-center"
-            >
-              Take Another Picture
-            </Button>
-            <Button
-              variant="secondary"
-              onClick={handleBackToHome}
-              className="flex-1 text-lg py-4 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all bg-white text-green-600 border border-green-600 hover:bg-green-50 flex items-center justify-center"
-            >
-              Back to Home
-            </Button>
-          </div>
+      <ContentContainer>
+        <div className="p-6 bg-white bg-opacity-90 rounded-xl shadow-md hover:shadow-lg transition-all mb-8 max-w-2xl w-full">
+          <ErrorView onNavigateToCamera={handleTakeAnotherPicture} />
         </div>
-      </div>
+        <div className="flex flex-col sm:flex-row gap-6 w-full max-w-md mx-auto">
+          <Button
+            variant="primary"
+            onClick={handleTakeAnotherPicture}
+            className="flex-1 text-lg py-4 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all bg-green-600 hover:bg-green-700 flex items-center justify-center"
+          >
+            Take Another Picture
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={handleBackToHome}
+            className="flex-1 text-lg py-4 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all bg-white text-green-600 border border-green-600 hover:bg-green-50 flex items-center justify-center"
+          >
+            Back to Home
+          </Button>
+        </div>
+      </ContentContainer>
     );
   }
 
   return (
-    <div
-      className="relative min-h-screen w-full bg-fixed bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        minHeight: "100vh",
-        width: "100vw",
-        position: "absolute",
-        top: 0,
-        left: 0,
-      }}
-    >
-      <div className="absolute inset-0 bg-black bg-opacity-10"></div>
-      <div className="relative z-10 flex flex-col items-center justify-center w-full h-full py-12 px-4">
-        <div className="text-center max-w-4xl mx-auto w-full">
-          <div className="p-6 bg-white bg-opacity-90 rounded-xl shadow-md hover:shadow-lg transition-all mb-8">
-            <h1 className="text-3xl font-bold mb-4 text-green-600">
-              {selectedRecipe ? selectedRecipe.name : "Your Recipe Matches"}
-            </h1>
-            {!selectedRecipe && (
-              <p className="text-lg text-gray-700 mb-4">
-                Based on your ingredients, we've found some delicious recipes
-                for you to try
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className="w-full max-w-4xl mx-auto">
+    <ContentContainer>
+      <div className="text-center max-w-4xl mx-auto w-full">
+        <div className="p-6 bg-white bg-opacity-90 rounded-xl shadow-md hover:shadow-lg transition-all mb-8">
+          <h1 className="text-3xl font-bold mb-4 text-green-600">
+            {selectedRecipe ? selectedRecipe.name : "Your Recipe Matches"}
+          </h1>
           {!selectedRecipe && (
-            <div className="bg-white bg-opacity-90 rounded-xl shadow-md p-6 mb-8">
-              <ImagePreview imageData={imageData} />
-            </div>
+            <p className="text-lg text-gray-700 mb-4">
+              Based on your ingredients, we've found some delicious recipes for
+              you to try
+            </p>
           )}
-
-          <AnalysisStatus isAnalyzing={isAnalyzing} error={error} />
-
-          {!isAnalyzing && !error && results && !selectedRecipe && (
-            <>
-              <div className="bg-white bg-opacity-90 rounded-xl shadow-md p-6 mb-8">
-                <ProductList products={results.detectedProducts} />
-              </div>
-
-              <div className="bg-white bg-opacity-90 rounded-xl shadow-md p-6 mb-8">
-                <RecipeList
-                  recipes={results.recipes}
-                  allergies={allergies}
-                  onRecipeClick={handleRecipeClick}
-                />
-              </div>
-            </>
-          )}
-
-          {selectedRecipe && (
-            <div className="bg-white bg-opacity-90 rounded-xl shadow-md p-6 mb-8">
-              <RecipeDetail
-                recipe={selectedRecipe}
-                onBackClick={handleBackToRecipes}
-              />
-            </div>
-          )}
-
-          <div className="flex flex-col sm:flex-row gap-6 w-full max-w-md mx-auto">
-            <Button
-              variant="primary"
-              onClick={handleTakeAnotherPicture}
-              className="flex-1 text-lg py-4 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all bg-green-600 hover:bg-green-700 flex items-center justify-center"
-            >
-              Take Another Picture
-            </Button>
-            <Button
-              variant="secondary"
-              onClick={handleBackToHome}
-              className="flex-1 text-lg py-4 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all bg-white text-green-600 border border-green-600 hover:bg-green-50 flex items-center justify-center"
-            >
-              Back to Home
-            </Button>
-          </div>
         </div>
       </div>
-    </div>
+
+      <div className="w-full max-w-4xl mx-auto">
+        {!selectedRecipe && (
+          <div className="bg-white bg-opacity-90 rounded-xl shadow-md p-6 mb-8">
+            <ImagePreview imageData={imageData} />
+          </div>
+        )}
+
+        <AnalysisStatus isAnalyzing={isAnalyzing} error={error} />
+
+        {!isAnalyzing && !error && results && !selectedRecipe && (
+          <>
+            <div className="bg-white bg-opacity-90 rounded-xl shadow-md p-6 mb-8">
+              <ProductList products={results.detectedProducts} />
+            </div>
+
+            <div className="bg-white bg-opacity-90 rounded-xl shadow-md p-6 mb-8">
+              <RecipeList
+                recipes={results.recipes}
+                allergies={allergies}
+                onRecipeClick={handleRecipeClick}
+              />
+            </div>
+          </>
+        )}
+
+        {selectedRecipe && (
+          <div className="bg-white bg-opacity-90 rounded-xl shadow-md p-6 mb-8">
+            <RecipeDetail
+              recipe={selectedRecipe}
+              onBackClick={handleBackToRecipes}
+            />
+          </div>
+        )}
+
+        <div className="flex flex-col sm:flex-row gap-6 w-full max-w-md mx-auto">
+          <Button
+            variant="primary"
+            onClick={handleTakeAnotherPicture}
+            className="flex-1 text-lg py-4 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all bg-green-600 hover:bg-green-700 flex items-center justify-center"
+          >
+            Take Another Picture
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={handleBackToHome}
+            className="flex-1 text-lg py-4 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all bg-white text-green-600 border border-green-600 hover:bg-green-50 flex items-center justify-center"
+          >
+            Back to Home
+          </Button>
+        </div>
+      </div>
+    </ContentContainer>
   );
 };
