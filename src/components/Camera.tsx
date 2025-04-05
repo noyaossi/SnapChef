@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./Button";
-import { ContentContainer } from "./ContentContainer";
 import backgroundImage from "../assets/homepage.jpg";
 
 const Camera: React.FC = () => {
@@ -27,12 +26,23 @@ const Camera: React.FC = () => {
     checkIfMobile();
   }, []);
 
+  // Function to stop camera stream
+  const stopCameraStream = () => {
+    if (stream) {
+      stream.getTracks().forEach((track) => {
+        track.stop();
+      });
+      setStream(null);
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+    }
+  };
+
   // Function to start the camera
   const startCamera = async (mode: "user" | "environment") => {
-    // Stop any existing stream
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
-    }
+    // Stop any existing stream first
+    stopCameraStream();
 
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -60,11 +70,30 @@ const Camera: React.FC = () => {
 
     // Cleanup function to stop the camera when component unmounts
     return () => {
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
+      stopCameraStream();
     };
   }, []);
+
+  // Add an event listener for before the user navigates away
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      stopCameraStream();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Handle page navigation in single-page app
+    const handleNavigateAway = () => {
+      stopCameraStream();
+    };
+
+    // Clean up event listeners
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      // Make sure to stop the stream when component unmounts
+      stopCameraStream();
+    };
+  }, [stream]);
 
   const switchCamera = () => {
     const newMode = facingMode === "user" ? "environment" : "user";
@@ -88,10 +117,19 @@ const Camera: React.FC = () => {
         // Convert canvas to data URL (base64 encoded image)
         const imageDataUrl = canvas.toDataURL("image/png");
 
+        // Stop the camera stream before navigating
+        stopCameraStream();
+
         // Navigate to the allergies page with the image data
         navigate("/allergies", { state: { imageData: imageDataUrl } });
       }
     }
+  };
+
+  const goBack = () => {
+    // Ensure camera is stopped before navigation
+    stopCameraStream();
+    navigate("/");
   };
 
   return (
@@ -188,7 +226,7 @@ const Camera: React.FC = () => {
               </Button>
               <Button
                 variant="secondary"
-                onClick={() => navigate("/")}
+                onClick={goBack}
                 className="flex-1 text-lg py-4 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all bg-white text-green-600 border border-green-600 hover:bg-green-50 flex items-center justify-center"
               >
                 Back to Home
