@@ -54,7 +54,7 @@ const Allergies: React.FC<AllergiesProps> = () => {
 
   return (
     <ContentContainer>
-      <div className="text-center max-w-3xl mx-auto">
+      <div className="text-center max-w-4xl mx-auto">
         <div className="p-6 bg-white bg-opacity-90 rounded-xl shadow-md hover:shadow-lg transition-all mb-8">
           <h1 className="text-3xl font-bold mb-4 text-green-600">
             Select Your Dietary Preferences

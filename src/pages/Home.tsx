@@ -25,12 +25,12 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Action Buttons - increased margin-top to move buttons down */}
-      <div className="flex flex-col sm:flex-row gap-6 w-full max-w-md mx-auto mt-12">
+      {/* Action Buttons with consistent spacing and centered text */}
+      <div className="flex flex-col sm:flex-row gap-6 w-full max-w-md mx-auto mb-8">
         <Button
           variant="primary"
           to="/camera"
-          className="flex-1 text-lg py-4 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all bg-green-600 hover:bg-green-700"
+          className="flex-1 text-lg py-4 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all bg-green-600 hover:bg-green-700 flex items-center justify-center"
         >
           Take Photo
         </Button>
@@ -38,14 +38,14 @@ const Home = () => {
         <Button
           variant="secondary"
           to="/upload"
-          className="flex-1 text-lg py-4 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all bg-white text-green-600 border border-green-600 hover:bg-green-50"
+          className="flex-1 text-lg py-4 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all bg-white text-green-600 border border-green-600 hover:bg-green-50 flex items-center justify-center"
         >
           Upload Image
         </Button>
       </div>
 
-      {/* Features Section */}
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl">
+      {/* Features Section with equal spacing from buttons */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl">
         <div className="p-6 bg-white bg-opacity-90 rounded-xl shadow-md hover:shadow-lg transition-all">
           <h3 className="text-xl font-semibold text-green-600 mb-3">
             Smart Recognition

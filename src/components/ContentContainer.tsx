@@ -8,7 +8,7 @@ interface ContentContainerProps {
 const ContentContainer: React.FC<ContentContainerProps> = ({ children }) => {
   return (
     <div
-      className="relative min-h-screen w-full bg-fixed bg-cover bg-center bg-no-repeat"
+      className="relative min-h-screen w-full bg-fixed bg-no-repeat"
       style={{
         backgroundImage: `url(${backgroundImage})`,
         minHeight: "100vh",
@@ -16,6 +16,9 @@ const ContentContainer: React.FC<ContentContainerProps> = ({ children }) => {
         position: "absolute",
         top: 0,
         left: 0,
+        backgroundSize: "cover", // This ensures the image covers the entire container
+        backgroundPosition: "center", // Centers the image
+        backgroundColor: "#f5f5f5", // Background color as fallback
       }}
     >
       {/* Semi-transparent overlay */}
