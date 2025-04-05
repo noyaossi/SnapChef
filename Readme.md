@@ -1,18 +1,26 @@
-# Modern React Starter Kit
+# SnapChef - Snap a Photo, Find a Recipe
 
 ## Overview
 
-A streamlined, modern React starter template built with Vite, TypeScript, and Tailwind CSS. This template provides a robust foundation for building scalable React applications with the latest best practices and tools.
+SnapChef is an innovative React application that uses AI to analyze photos of food ingredients and suggest personalized recipes. Simply take a photo of the ingredients you have on hand, and SnapChef will provide you with delicious recipe options tailored to your dietary preferences and available ingredients.
 
 ## Features
 
-- ⚡️ **Vite** - Lightning fast build tool that serves your code via native ES modules
-- ⚛️ **React 18** - The latest version of React with improved rendering and better performance
+- 📸 **Ingredient Recognition** - AI-powered identification of food ingredients from photos
+- 🍳 **Personalized Recipes** - Recipe suggestions based on your ingredients and preferences
+- 🥗 **Dietary Customization** - Filter recipes by dietary restrictions and allergies
+- 📱 **Mobile-Friendly Design** - Optimized for use on mobile devices for on-the-go recipe finding
+- 🔍 **Smart Search** - Find recipes even with partial ingredients
+- 📊 **Ingredient Substitution** - Suggestions for ingredient alternatives
+
+## Technology Stack
+
+- ⚡️ **Vite** - Lightning fast build tool that serves code via native ES modules
+- ⚛️ **React 18** - Latest version of React with improved rendering and better performance
 - 🔷 **TypeScript** - Enhanced developer experience with static typing
 - 🎨 **Tailwind CSS** - Utility-first CSS framework for rapid UI development
-- 📱 **Responsive Design** - Mobile-first approach with Tailwind's responsive utilities
 - 🧭 **React Router** - Client-side routing with React Router v6
-- 📦 **Modern Build Setup** - Optimized production builds with code splitting
+- 🤖 **Image Recognition API** - AI-powered ingredient detection
 
 ## Getting Started
 
@@ -24,11 +32,13 @@ A streamlined, modern React starter template built with Vite, TypeScript, and Ta
 ### Installation
 
 1. Clone this repository:
+
 ```bash
 git clone [repository-url]
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 # or
@@ -36,6 +46,7 @@ yarn
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 # or
@@ -55,9 +66,11 @@ yarn dev
 
 ```
 ├── src/
-│   ├── assets/        # Static assets
-│   ├── components/    # Reusable components
+│   ├── assets/        # Static assets and images
+│   ├── components/    # Reusable UI components
 │   ├── pages/         # Page components
+│   ├── services/      # API services including AI image analysis
+│   ├── types/         # TypeScript type definitions
 │   ├── App.tsx        # Main App component
 │   ├── Router.tsx     # Route definitions
 │   └── main.tsx       # Application entry point
@@ -66,14 +79,17 @@ yarn dev
 └── package.json       # Project dependencies and scripts
 ```
 
-## Technologies
+## How It Works
 
-- [React](https://reactjs.org/)
-- [Vite](https://vitejs.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [React Router](https://reactrouter.com/)
+1. **Capture or Upload** - Take a photo with your device camera or upload an existing image
+2. **AI Analysis** - Our image recognition algorithm identifies ingredients in your photo
+3. **Recipe Matching** - The app matches your ingredients with our recipe database
+4. **Personalization** - Recipes are filtered based on your dietary preferences
+5. **Recipe Display** - Browse through suggested recipes and select one to view detailed instructions
 
-## License
+## Future Enhancements
 
-MIT License - feel free to use this template for your own projects!
+- Meal planning calendar integration
+- Grocery list generation for missing ingredients
+- Community recipe sharing
+- Voice command support
