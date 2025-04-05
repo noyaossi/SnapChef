@@ -1,6 +1,9 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { config } from '../config.js';
 
+// Add this flag to toggle between real API and mock data
+const USE_MOCK_DATA = true; // Set to false when you have a valid API key
+
 /**
  * Service for handling Claude API interactions
  */
@@ -17,6 +20,12 @@ class ClaudeService {
    * @returns {Promise<Object>} Analysis results
    */
   async analyzeImage(imageData) {
+    // Return mock data if flag is set
+    if (USE_MOCK_DATA) {
+      console.log('Using mock data for image analysis');
+      return this.getMockImageAnalysis();
+    }
+
     try {
       // Determine if imageData is a file path or base64 data
       let imageContent;
@@ -123,6 +132,12 @@ class ClaudeService {
    * @returns {Promise<Array>} Recipe suggestions
    */
   async getRecipeSuggestions(ingredients, allergies = []) {
+    // Return mock data if flag is set
+    if (USE_MOCK_DATA) {
+      console.log('Using mock data for recipe suggestions');
+      return this.getMockRecipes(ingredients, allergies);
+    }
+
     try {
       const ingredientsList = ingredients.map(i => i.name).join(', ');
       const allergiesList = allergies.length > 0 ? allergies.join(', ') : 'none';
@@ -176,6 +191,137 @@ class ClaudeService {
       console.error('Error parsing Claude recipe response:', error);
       return [];
     }
+  }
+
+  /**
+   * Get mock image analysis data for testing
+   * @returns {Array} Mock detected items
+   */
+  getMockImageAnalysis() {
+    return [
+      { name: "Tomatoes", category: "Vegetable" },
+      { name: "Onions", category: "Vegetable" },
+      { name: "Garlic", category: "Vegetable" },
+      { name: "Bell Peppers", category: "Vegetable" },
+      { name: "Pasta", category: "Grain" },
+      { name: "Olive Oil", category: "Oil" }
+    ];
+  }
+
+  /**
+   * Get mock recipe suggestions for testing
+   * @param {Array} ingredients - List of ingredients
+   * @param {Array} allergies - User allergies
+   * @returns {Array} Mock recipes
+   */
+  getMockRecipes(ingredients, allergies = []) {
+    // Base recipes
+    const allRecipes = [
+      {
+        id: Date.now() + 1,
+        name: "Pasta Marinara",
+        ingredients: ["Pasta", "Tomatoes", "Garlic", "Onions", "Olive Oil", "Salt", "Black Pepper", "Basil"],
+        instructions: [
+          "Bring a large pot of salted water to boil and cook pasta according to package instructions.",
+          "In a large pan, heat olive oil over medium heat.",
+          "Add diced onions and cook until translucent, about 3-4 minutes.",
+          "Add minced garlic and cook for another minute.",
+          "Add diced tomatoes and cook until they break down, about 10 minutes.",
+          "Season with salt, pepper, and torn basil leaves.",
+          "Drain pasta and toss with the sauce before serving."
+        ],
+        allergens: ["Wheat"],
+        prepTime: "10 minutes",
+        cookTime: "20 minutes",
+        servings: 4,
+        difficulty: "Easy"
+      },
+      {
+        id: Date.now() + 2,
+        name: "Roasted Vegetable Medley",
+        ingredients: ["Bell Peppers", "Onions", "Garlic", "Olive Oil", "Salt", "Black Pepper", "Thyme"],
+        instructions: [
+          "Preheat oven to 425°F (220°C).",
+          "Cut bell peppers and onions into 1-inch pieces.",
+          "Mince garlic or leave whole cloves.",
+          "Toss vegetables with olive oil, salt, pepper, and thyme on a baking sheet.",
+          "Roast for 25-30 minutes, stirring halfway through, until vegetables are tender and slightly caramelized."
+        ],
+        allergens: [],
+        prepTime: "10 minutes",
+        cookTime: "30 minutes",
+        servings: 4,
+        difficulty: "Easy"
+      },
+      {
+        id: Date.now() + 3,
+        name: "Tomato Garlic Bruschetta",
+        ingredients: ["Tomatoes", "Garlic", "Baguette", "Olive Oil", "Basil", "Salt", "Black Pepper"],
+        instructions: [
+          "Dice tomatoes and place in a bowl.",
+          "Mince garlic and add to tomatoes.",
+          "Add chopped fresh basil, olive oil, salt, and pepper. Mix well.",
+          "Slice baguette and toast until golden brown.",
+          "Rub toasted bread with a garlic clove.",
+          "Top each slice with the tomato mixture and serve immediately."
+        ],
+        allergens: ["Wheat"],
+        prepTime: "15 minutes",
+        cookTime: "5 minutes",
+        servings: 6,
+        difficulty: "Easy"
+      },
+      {
+        id: Date.now() + 4,
+        name: "Pasta Primavera",
+        ingredients: ["Pasta", "Bell Peppers", "Onions", "Garlic", "Olive Oil", "Parmesan Cheese", "Cream", "Salt", "Black Pepper"],
+        instructions: [
+          "Cook pasta according to package directions.",
+          "In a large skillet, heat olive oil over medium heat.",
+          "Add diced onions and bell peppers, cooking until softened.",
+          "Add minced garlic and cook for another minute.",
+          "Stir in cream and bring to a simmer.",
+          "Add cooked pasta, grated Parmesan, salt, and pepper.",
+          "Toss until pasta is coated with sauce and serve hot."
+        ],
+        allergens: ["Wheat", "Dairy"],
+        prepTime: "15 minutes",
+        cookTime: "15 minutes",
+        servings: 4,
+        difficulty: "Medium"
+      },
+      {
+        id: Date.now() + 5,
+        name: "Tomato and Garlic Soup",
+        ingredients: ["Tomatoes", "Garlic", "Onions", "Vegetable Broth", "Olive Oil", "Salt", "Black Pepper", "Basil"],
+        instructions: [
+          "Heat olive oil in a large pot over medium heat.",
+          "Add diced onions and cook until translucent.",
+          "Add minced garlic and cook for 30 seconds.",
+          "Add diced tomatoes and cook for 5 minutes.",
+          "Pour in vegetable broth and bring to a simmer.",
+          "Cook for 15 minutes, then blend until smooth.",
+          "Season with salt, pepper, and fresh basil."
+        ],
+        allergens: [],
+        prepTime: "10 minutes",
+        cookTime: "25 minutes",
+        servings: 4,
+        difficulty: "Easy"
+      }
+    ];
+    
+    // Filter out recipes with allergens that match user allergies
+    const filteredRecipes = allergies.length > 0 
+      ? allRecipes.filter(recipe => 
+          !recipe.allergens.some(allergen => 
+            allergies.includes(allergen.toLowerCase())
+          )
+        )
+      : allRecipes;
+    
+    // Take a subset of recipes
+    return filteredRecipes.slice(0, 3);
   }
 }
 

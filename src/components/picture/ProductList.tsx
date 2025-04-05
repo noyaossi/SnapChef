@@ -7,17 +7,23 @@ interface ProductListProps {
 
 export const ProductList: React.FC<ProductListProps> = ({ products }) => {
   return (
-    <div className="p-4 bg-gray-50 rounded-lg mb-4">
-      <h2 className="text-xl font-semibold mb-3">Detected Products</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <h2 className="text-xl font-semibold text-green-600 mb-4">
+        Detected Ingredients
+      </h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {products.map((product) => (
-          <div key={product.id} className="p-3 border rounded-lg bg-white">
+          <div
+            key={product.id}
+            className="p-4 border rounded-lg bg-white hover:shadow-md transition-all"
+          >
             <h3 className="font-medium text-lg">{product.name}</h3>
-            <p className="text-sm text-gray-600">
-              Category: {product.category}
-            </p>
+            <div className="mt-1 inline-block px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+              {product.category}
+            </div>
+
             {product.commonAllergens.length > 0 && (
-              <div className="mt-2">
+              <div className="mt-3">
                 <p className="text-xs text-red-600 font-medium">
                   Contains allergens:
                 </p>
@@ -36,6 +42,9 @@ export const ProductList: React.FC<ProductListProps> = ({ products }) => {
           </div>
         ))}
       </div>
+      <p className="text-sm text-gray-600 mt-3">
+        These are the ingredients we detected in your image
+      </p>
     </div>
   );
 };
