@@ -1,13 +1,18 @@
 import React from "react";
 import { ContentContainer } from "../components/ContentContainer";
 import { Button } from "../components/Button";
+import snapChefLogo from "../assets/logo.jpeg";
 
 const Home = () => {
   return (
     <ContentContainer>
       <div className="text-center max-w-3xl mx-auto">
         <div className="p-6 bg-white bg-opacity-90 rounded-xl shadow-md hover:shadow-lg transition-all mb-8">
-          <h1 className="text-5xl font-bold mb-6 text-green-600">SnapChef</h1>
+          <img
+            src={snapChefLogo}
+            alt="SnapChef Logo"
+            className="h-28 mx-auto mb-6" // Adjust height as needed
+          />
           <p className="text-2xl font-medium text-black mb-8">
             Snap a photo, find a recipe
           </p>
@@ -44,7 +49,7 @@ const Home = () => {
         </Button>
       </div>
 
-      {/* Features Section with equal spacing from buttons */}
+      {/* Features Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl">
         <div className="p-6 bg-white bg-opacity-90 rounded-xl shadow-md hover:shadow-lg transition-all">
           <h3 className="text-xl font-semibold text-green-600 mb-3">
