@@ -1,5 +1,5 @@
 import React from "react";
-import backgroundImage from "../assets/bg.jpg";
+import backgroundImage from "../assets/newBackground.jpeg";
 
 interface ContentContainerProps {
   children: React.ReactNode;
@@ -13,7 +13,8 @@ const ContentContainer: React.FC<ContentContainerProps> = ({ children }) => {
         className="fixed inset-0 bg-no-repeat z-0"
         style={{
           backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: "cover",
+          backgroundSize: "contain",
+          backgroundRepeat: "repeat",
           backgroundPosition: "center",
           backgroundColor: "#f5f5f5", // Fallback color
           height: "100vh", // Ensure it covers full height

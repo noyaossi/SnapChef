@@ -1,7 +1,7 @@
 import React from "react";
 import { ContentContainer } from "../components/ContentContainer";
 import { Button } from "../components/Button";
-import snapChefLogo from "../assets/logo.jpeg";
+import snapChefLogo from "../assets/logo3.png";
 
 const Home = () => {
   return (
@@ -11,7 +11,7 @@ const Home = () => {
           <img
             src={snapChefLogo}
             alt="SnapChef Logo"
-            className="h-28 mx-auto mb-6" // Adjust height as needed
+            className="h-40 mx-auto mb-6" // Adjust height as needed
           />
           <p className="text-2xl font-medium text-black mb-8">
             Snap a photo, find a recipe
